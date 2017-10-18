@@ -1,2 +1,5 @@
 .idea
-LZ77.iml
+out
+*.iml
+Compressed
+testFile.txtZIP

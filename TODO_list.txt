@@ -1,0 +1,1 @@
+//TODO Obrabianie wyników przed wyświetleniem ich na konsole

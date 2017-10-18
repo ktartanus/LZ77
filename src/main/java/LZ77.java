@@ -1,10 +1,12 @@
-import compressors.Compressor;
-import compressors.GZIPCompressor;
+package src.main.java;
+
+import src.main.java.compression.Compressor;
+import src.main.java.compression.GZIPCompressor;
 
 public class LZ77 {
     public static void main(String args[]){
         Compressor zip = new GZIPCompressor();
-        zip.compressAndDecompressFile("testFile.txt");
+//        zip.compressAndDecompressFile("testFile.txt");
     }
 }
 
