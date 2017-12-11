@@ -1,24 +1,24 @@
 package utils;
 
 import compression.CompressionParams;
+import java.util.List;
 
 /**
  * Created by ktartanus on 11.12.2017.
  */
 public class CompressionStatistics {
-    public static void showCompressionStatistics(CompressionParams compressionParams){
-        StringBuilder sb = new StringBuilder();
-        String tab = "\t";
-        sb.append("Algorytm  " + compressionParams.getCompressionType() +"\n");
-        sb.append("Parametry Kompresji :\n");
-        sb.append("Czas Kompresji" + tab);
-        sb.append("Czas Dekompresji" + tab);
-        sb.append("Rozmiar wejściowy" + tab);
-        sb.append("Rozmiar po kompresji");
+    public static void showCompressionStatistics(List<CompressionParams> compressionParams){
+
+        System.out.format("%22s%22s%22s%22s%22s", "Algorytm", "Czas Kompresji", "Czas Dekompresji", "Rozmiar wejściowy", "Rozmiar po kompresji");
+        System.out.println("\n");
+        for(CompressionParams singleParam : compressionParams){
+            showTableRow(singleParam.getCompressionType(), singleParam.getCompressionTimeInMilis(),singleParam.getDecompressionTimeInMilis(),
+                    singleParam.getInitialBytefileSize(), singleParam.getCompressedByteFileSize());
+        }
     }
-    private String showTableRow(int timeCompression, int timeDecompression, int fileSizeCompression, int fileSizeDecompression ){
-        String tab = "\t";
-        String singleRow = timeCompression + tab + timeDecompression + tab + fileSizeCompression + tab + fileSizeDecompression;
-        return singleRow;
+    private static void showTableRow(String algorythmName, Integer timeCompression, Integer timeDecompression, Integer fileSizeCompression, Integer fileSizeDecompression ){
+          System.out.format("%22s%22s%22s%22s%22s", algorythmName, timeCompression.toString() , timeDecompression.toString(),
+                  fileSizeCompression.toString(), fileSizeDecompression.toString());;
+        System.out.println("\n");
     }
 }
