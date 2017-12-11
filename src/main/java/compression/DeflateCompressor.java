@@ -1,6 +1,7 @@
 package src.main.java.compression;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
 
 public class DeflateCompressor implements Compressor{
 
@@ -20,7 +22,9 @@ public class DeflateCompressor implements Compressor{
             long startCompressionTime = System.nanoTime();
             byte[] out = this.compress(data);
             long endCompressionTime = System.nanoTime();
-            compressionParams.setFileName("test.file");
+            File userFile = new File(inputFilePath);
+            String filename = userFile.getName();
+            compressionParams.setFileName(filename);
             compressionParams.setCompressionType("DEFLATER");
             compressionParams.setInitialBytefileSize(data.length);
             compressionParams.setCompressedByteFileSize(out.length);
