@@ -12,9 +12,15 @@ public class LZ77 {
 //        zip.compressAndDecompressFile("testFile.txt");
         Compressor deflateCompressor = new DeflateCompressor();
         Compressor snappyCompressor = new SnappyCompressor();
+        Compressor lz4Compressor = new LZ4Compressor();
+        Compressor gzipCompressor = new GZIPCompressor();
+
         List<Compressor> compressors = new ArrayList<>();
         compressors.add(snappyCompressor);
         compressors.add(deflateCompressor);
+        compressors.add(lz4Compressor);
+        compressors.add(gzipCompressor);
+
         List<CompressionParams> compressionParamsList = new ArrayList<CompressionParams>();
         for (Compressor compressor : compressors){
             compressionParams = compressor.compressAndDecompressFile("C:\\Users\\ktartanus\\Desktop\\lz77\\LZ77\\Compressed\\testFile.txt");

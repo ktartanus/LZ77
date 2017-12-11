@@ -1,9 +1,11 @@
 package compression;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import sun.misc.IOUtils;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -15,12 +17,35 @@ public class GZIPCompressor implements Compressor {
     private static final String OUTPUT_FOLDER = "C:\\outputzip";
 
     public CompressionParams compressAndDecompressFile(String inputFilePath) {
-        compress(inputFilePath, inputFilePath + "ZIP" );
-        decompress(inputFilePath + "ZIP", "Compressed");
+        try {
+            CompressionParams compressionParams = new CompressionParams();
+
+            Path fileLocation = Paths.get(inputFilePath);
+            byte[] data = Files.readAllBytes(fileLocation);
+            long startCompressionTime = System.nanoTime();
+            byte[] out = compress(inputFilePath, inputFilePath + "ZIP");
+            long endCompressionTime = System.nanoTime();
+
+            long startDecompressionTime = System.nanoTime();
+            decompress(inputFilePath + "ZIP", "Compressed");
+            long endDecompressionTime = System.nanoTime();
+            File userFile = new File(inputFilePath);
+            String filename = userFile.getName();
+            compressionParams.setFileName(filename);
+            compressionParams.setCompressionType("gZIP");
+            compressionParams.setInitialBytefileSize(data.length);
+            compressionParams.setCompressedByteFileSize(out.length);
+            compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
+            compressionParams.setDecompressionTimeInMilis((int)(endDecompressionTime - startDecompressionTime));
+
+            return compressionParams;
+        } catch (IOException e) {
+
+        }
         return null;
     }
 
-    public void compress(String inputFilePath, String outputFilePath) {
+    public byte[] compress(String inputFilePath, String outputFilePath) {
 
 
         try {
@@ -39,18 +64,18 @@ public class GZIPCompressor implements Compressor {
 
             in.close();
             zos.closeEntry();
-
-            //remember close it
             zos.close();
 
-            System.out.println("Done");
+            Path path = Paths.get(outputFilePath);
+            return Files.readAllBytes(path);
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return null;
     }
 
-    public void decompress(String zipFile, String outputFolder) {
+    public byte[] decompress(String zipFile, String outputFolder) {
 
 
         byte[] buffer = new byte[1024];
@@ -72,7 +97,8 @@ public class GZIPCompressor implements Compressor {
             while(ze!=null){
 
                 String fileName = ze.getName();
-                File newFile = new File(outputFolder + File.separator + fileName);
+                String newFilePath = outputFolder + File.separator + fileName;
+                File newFile = new File(newFilePath);
 
                 System.out.println("file unzip : "+ newFile.getAbsoluteFile());
 
@@ -89,16 +115,18 @@ public class GZIPCompressor implements Compressor {
 
                 fos.close();
                 ze = zis.getNextEntry();
+
+                Path path = Paths.get(newFilePath);
+                return Files.readAllBytes(path);
+
             }
 
             zis.closeEntry();
             zis.close();
-
-            System.out.println("Done");
-
         }catch(IOException ex){
             ex.printStackTrace();
         }
+        return buffer;
     }
 
 }
