@@ -1,4 +1,4 @@
-package src.main.java.compression;
+package compression;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;

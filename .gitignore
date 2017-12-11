@@ -3,4 +3,5 @@ out
 *.iml
 Compressed
 testFile.txtZIP
+.class
 .editorconfig

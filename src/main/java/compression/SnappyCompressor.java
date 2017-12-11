@@ -1,4 +1,4 @@
-package src.main.java.compression;
+package compression;
 
 import org.xerial.snappy.Snappy;
 

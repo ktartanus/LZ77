@@ -1,4 +1,4 @@
-package src.main.java.compression;
+package compression;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +8,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class GZIPCompressor implements Compressor{
+public class GZIPCompressor implements Compressor {
 
     byte[] buffer = new byte[1024];
 

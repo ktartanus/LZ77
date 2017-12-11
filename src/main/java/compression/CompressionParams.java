@@ -1,4 +1,4 @@
-package src.main.java.compression;
+package compression;
 
 public class CompressionParams {
 
@@ -7,6 +7,18 @@ public class CompressionParams {
     private int initialBytefileSize;
     private int compressedByteFileSize;
     private int compressionTimeInMilis;
+    private int decompressionTimeInMilis;
+
+    public CompressionParams(){};
+
+    public CompressionParams(String compressionType, String fileName, int initialBytefileSize, int compressedByteFileSize, int compressionTimeInMilis, int decompressionTimeInMilis) {
+        this.compressionType = compressionType;
+        this.fileName = fileName;
+        this.initialBytefileSize = initialBytefileSize;
+        this.compressedByteFileSize = compressedByteFileSize;
+        this.compressionTimeInMilis = compressionTimeInMilis;
+        this.decompressionTimeInMilis = decompressionTimeInMilis;
+    }
 
     public String getCompressionType() {
         return compressionType;
@@ -46,5 +58,13 @@ public class CompressionParams {
 
     public void setCompressionTimeInMilis(int compressionTimeInMilis) {
         this.compressionTimeInMilis = compressionTimeInMilis;
+    }
+
+    public int getDecompressionTimeInMilis() {
+        return decompressionTimeInMilis;
+    }
+
+    public void setDecompressionTimeInMilis(int decompressionTimeInMilis) {
+        this.decompressionTimeInMilis = decompressionTimeInMilis;
     }
 }
