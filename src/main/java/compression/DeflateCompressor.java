@@ -14,21 +14,30 @@ public class DeflateCompressor implements Compressor{
 
     public CompressionParams compressAndDecompressFile(String inputFilePath) {
         try {
+            CompressionParams compressionParams = new CompressionParams();
             Path fileLocation = Paths.get(inputFilePath);
             byte[] data = Files.readAllBytes(fileLocation);
+            long startCompressionTime = System.nanoTime();
             byte[] out = this.compress(data);
+            long endCompressionTime = System.nanoTime();
+            compressionParams.setFileName("test.file");
+            compressionParams.setCompressionType("DEFLATER");
+            compressionParams.setInitialBytefileSize(data.length);
+            compressionParams.setCompressedByteFileSize(out.length);
+            compressionParams.setCompressionTimeInMilis((int)(startCompressionTime-endCompressionTime));
             FileOutputStream fos = new FileOutputStream("deflate.def");
             fos.write(out);
             fos.close();
 
             byte[] decompressed = this.decompress(out);
-            String text = new String(decompressed);
             FileOutputStream test = new FileOutputStream("deflate.txt");
             test.write(decompressed);
             test.close();
-        } catch (IOException e) {
 
+            return compressionParams;
         } catch (DataFormatException e) {
+
+        } catch (IOException e) {
 
         }
 
