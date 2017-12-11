@@ -20,20 +20,24 @@ public class LZ4Compressor implements Compressor {
             long endCompressionTime = System.nanoTime();
             File userFile = new File(inputFilePath);
             String filename = userFile.getName();
-            compressionParams.setFileName(filename);
-            compressionParams.setCompressionType("LZ4");
-            compressionParams.setInitialBytefileSize(data.length);
-            compressionParams.setCompressedByteFileSize(out.length);
-            compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
 
             FileOutputStream fos = new FileOutputStream("lz4.lz");
             fos.write(out);
             fos.close();
 
+            long decompressStartTime = System.nanoTime();
             byte[] decompressed = this.decompress(out, data.length);
+            long decompressEndTime = System.nanoTime();
             FileOutputStream test = new FileOutputStream("lz4.txt");
             test.write(decompressed);
             test.close();
+
+            compressionParams.setFileName(filename);
+            compressionParams.setCompressionType("LZ4");
+            compressionParams.setInitialBytefileSize(data.length);
+            compressionParams.setCompressedByteFileSize(out.length);
+            compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
+            compressionParams.setDecompressionTimeInMilis((int)(decompressEndTime - decompressStartTime));
 
             return compressionParams;
         } catch (IOException e) {

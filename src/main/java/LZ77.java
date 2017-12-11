@@ -8,8 +8,6 @@ import java.util.List;
 public class LZ77 {
     public static void main(String args[]){
         CompressionParams compressionParams = new CompressionParams();
-//        Compressor gzipCompressor = new GZIPCompressor();
-//        zip.compressAndDecompressFile("testFile.txt");
         Compressor deflateCompressor = new DeflateCompressor();
         Compressor snappyCompressor = new SnappyCompressor();
         List<Compressor> compressors = new ArrayList<>();
