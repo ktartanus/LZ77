@@ -28,7 +28,7 @@ public class DeflateCompressor implements Compressor{
             compressionParams.setCompressionType("DEFLATER");
             compressionParams.setInitialBytefileSize(data.length);
             compressionParams.setCompressedByteFileSize(out.length);
-            compressionParams.setCompressionTimeInMilis((int)(startCompressionTime-endCompressionTime));
+            compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
             FileOutputStream fos = new FileOutputStream("deflate.def");
             fos.write(out);
             fos.close();

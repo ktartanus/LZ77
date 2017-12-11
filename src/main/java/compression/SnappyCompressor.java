@@ -24,7 +24,7 @@ public class SnappyCompressor implements Compressor{
             compressionParams.setCompressionType("SNAPPY");
             compressionParams.setInitialBytefileSize(data.length);
             compressionParams.setCompressedByteFileSize(out.length);
-            compressionParams.setCompressionTimeInMilis((int)(startCompressionTime-endCompressionTime));
+            compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
 
             FileOutputStream fos = new FileOutputStream("snappy.snap");
             fos.write(out);
