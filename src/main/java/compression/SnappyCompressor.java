@@ -2,6 +2,7 @@ package compression;
 
 import org.xerial.snappy.Snappy;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,8 +18,9 @@ public class SnappyCompressor implements Compressor{
             long startCompressionTime = System.nanoTime();
             byte[] out = this.compress(data);
             long endCompressionTime = System.nanoTime();
-
-            compressionParams.setFileName("test.file");
+            File userFile = new File(inputFilePath);
+            String filename = userFile.getName();
+            compressionParams.setFileName(filename);
             compressionParams.setCompressionType("SNAPPY");
             compressionParams.setInitialBytefileSize(data.length);
             compressionParams.setCompressedByteFileSize(out.length);
