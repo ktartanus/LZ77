@@ -1,11 +1,13 @@
 package compression;
 
+import utils.FileUtils;
+
 import java.io.*;
 import java.nio.file.Files;
 
 public class LZ77Compressor implements Compressor {
     private Reader inputFile;
-    private int inputBuforSize;
+    private int inputBuforSize = 1024;
     private PrintWriter outputFile;
     private StringBuffer dictionarySize;
 
@@ -17,19 +19,21 @@ public class LZ77Compressor implements Compressor {
 
             CompressionParams compressionParams = new CompressionParams();
             long startCompressionTime = System.nanoTime();
-            byte[] compressed = this.compress(filename);
+            byte[] compressed = this.compress(inputFilePath);
             long endCompressionTime = System.nanoTime();
 
             long startDecompressionTime = System.nanoTime();
-            byte[] decompressed = this.decompress(filename);
+            byte[] decompressed = this.decompress(inputFilePath);
             long endDecompressionTime = System.nanoTime();
+
+            byte[] initFile = Files.readAllBytes(new File(inputFilePath).toPath());
 
             compressionParams.setFileName(filename);
             compressionParams.setCompressionType("LZ77");
-            compressionParams.setInitialBytefileSize(decompressed.length);
+            compressionParams.setInitialBytefileSize(initFile.length);
             compressionParams.setCompressedByteFileSize(compressed.length);
             compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
-            compressionParams.setDecompressionTimeInMilis((int)(startDecompressionTime - endDecompressionTime));
+            compressionParams.setDecompressionTimeInMilis((int)(endDecompressionTime - startDecompressionTime));
 
             return compressionParams;
         } catch (IOException e) {
@@ -46,9 +50,13 @@ public class LZ77Compressor implements Compressor {
     }
 
     /* filename - nazwa pliku bez rozszerzenia */
-    private byte[] compress(String filename) throws IOException {
-        inputFile = new BufferedReader(new FileReader(filename));
-        outputFile = new PrintWriter(new BufferedWriter(new FileWriter(filename+".lz77")));
+    private byte[] compress(String inputFilePath) throws IOException {
+        dictionarySize = new StringBuffer(inputBuforSize);
+        String filename = new File(inputFilePath).getName();
+        inputFile = new BufferedReader(new FileReader(inputFilePath));
+
+        String compressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-lz77.lz77";
+        outputFile = new PrintWriter(new BufferedWriter(new FileWriter(compressedFilePath)));
 
         int nextChar;
         int matchIndex = 0;
@@ -119,14 +127,22 @@ public class LZ77Compressor implements Compressor {
         outputFile.flush();
         outputFile.close();
 
-        byte[] bFile = Files.readAllBytes(new File(filename+".lz77").toPath());
+        byte[] bFile = Files.readAllBytes(new File(compressedFilePath).toPath());
 
         return bFile;
     }
 
-    private byte[] decompress(String filename) throws IOException {
-        inputFile = new BufferedReader(new FileReader(filename+".lz77"));
-        outputFile = new PrintWriter(new BufferedWriter(new FileWriter(filename+".dec")));
+    private byte[] decompress(String inputFilePath) throws IOException {
+        dictionarySize = new StringBuffer(inputBuforSize);
+
+        String filename = new File(inputFilePath).getName();
+        String compressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-lz77.lz77";
+
+        inputFile = new BufferedReader(new FileReader(compressedFilePath));
+
+        String decompressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-lz77.txt";
+
+        outputFile = new PrintWriter(new BufferedWriter(new FileWriter(decompressedFilePath)));
         StreamTokenizer streamTokenizer = new StreamTokenizer(inputFile);
 
         /* Dodanie znaków specjalnych tokenizera, aby były traktowane jako słowa */
@@ -162,10 +178,12 @@ public class LZ77Compressor implements Compressor {
                     streamTokenizer.nextToken(); // get the length
                     length = (int)streamTokenizer.nval;
                     /* znajdujemy dopasowany ciąg za pomocą indeksu i długości ciągu i zapisujemy zdekompresowany ciag*/
-                    String output = dictionarySize.substring(offset, offset+length);
-                    outputFile.print(output);
-                    dictionarySize.append(output);
-                    trimDictionarySize();
+                    if(dictionarySize.length() >= offset+length){
+                        String output = dictionarySize.substring(offset, offset+length);
+                        outputFile.print(output);
+                        dictionarySize.append(output);
+                        trimDictionarySize();
+                    }
                     break;
                 default:
             }
@@ -174,7 +192,7 @@ public class LZ77Compressor implements Compressor {
         outputFile.flush();
         outputFile.close();
 
-        byte[] bFile = Files.readAllBytes(new File(filename+".dec").toPath());
+        byte[] bFile = Files.readAllBytes(new File(decompressedFilePath).toPath());
 
         return bFile;
     }

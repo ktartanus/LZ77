@@ -17,12 +17,14 @@ public class LZ77 {
         Compressor snappyCompressor = new SnappyCompressor();
         Compressor lz4Compressor = new LZ4Compressor();
         Compressor gzipCompressor = new GZIPCompressor();
+        Compressor lz77Compressor = new LZ77Compressor();
 
         List<Compressor> compressors = new ArrayList<>();
         compressors.add(snappyCompressor);
         compressors.add(deflateCompressor);
         compressors.add(lz4Compressor);
         compressors.add(gzipCompressor);
+        compressors.add(lz77Compressor);
 
 
         for(String inputFile : inputFileList){
