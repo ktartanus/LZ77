@@ -1,6 +1,7 @@
 package compression;
 
 import org.xerial.snappy.Snappy;
+import utils.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,14 +21,19 @@ public class SnappyCompressor implements Compressor{
             long endCompressionTime = System.nanoTime();
             File userFile = new File(inputFilePath);
             String filename = userFile.getName();
-            FileOutputStream fos = new FileOutputStream("snappy.snap");
+
+            String compressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-snappy.snap";
+            FileOutputStream fos = new FileOutputStream(compressedFilePath);
             fos.write(out);
             fos.close();
 
             long decompressStartTime = System.nanoTime();
             byte[] decompressed = this.decompress(out);
             long decompressEndTime = System.nanoTime();
-            FileOutputStream test = new FileOutputStream("snappy.txt");
+
+            String decompressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-snappy.txt";
+
+            FileOutputStream test = new FileOutputStream(decompressedFilePath);
             test.write(decompressed);
             test.close();
 

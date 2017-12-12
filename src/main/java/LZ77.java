@@ -7,7 +7,12 @@ import java.util.List;
 
 public class LZ77 {
     public static void main(String args[]){
-        CompressionParams compressionParams = new CompressionParams();
+        List<String> inputFileList = new ArrayList<>();
+        inputFileList.add("Compressed/testFile.txt");
+        inputFileList.add("Compressed/testFile2.txt");
+        inputFileList.add("Compressed/testFile3.txt");
+
+        CompressionParams compressionParams;
         Compressor deflateCompressor = new DeflateCompressor();
         Compressor snappyCompressor = new SnappyCompressor();
         Compressor lz4Compressor = new LZ4Compressor();
@@ -19,15 +24,15 @@ public class LZ77 {
         compressors.add(lz4Compressor);
         compressors.add(gzipCompressor);
 
-        List<CompressionParams> compressionParamsList = new ArrayList<CompressionParams>();
-        for (Compressor compressor : compressors){
-            compressionParams = compressor.compressAndDecompressFile("C:\\Users\\ktartanus\\Desktop\\lz77\\LZ77\\Compressed\\testFile.txt");
-            compressionParamsList.add(compressionParams);
+
+        for(String inputFile : inputFileList){
+            List<CompressionParams> compressionParamsList = new ArrayList<CompressionParams>();
+            for (Compressor compressor : compressors){
+                compressionParams = compressor.compressAndDecompressFile(inputFile);
+                compressionParamsList.add(compressionParams);
+            }
+            CompressionStatistics.showCompressionStatistics(compressionParamsList);
         }
-        CompressionStatistics.showCompressionStatistics(compressionParamsList);
-
     }
-
-
 }
 

@@ -1,6 +1,7 @@
 package compression;
 
 import net.jpountz.lz4.LZ4Factory;
+import utils.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,14 +22,18 @@ public class LZ4Compressor implements Compressor {
             File userFile = new File(inputFilePath);
             String filename = userFile.getName();
 
-            FileOutputStream fos = new FileOutputStream("lz4.lz");
+            String compressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-lz4.lz4";
+
+            FileOutputStream fos = new FileOutputStream(compressedFilePath);
             fos.write(out);
             fos.close();
 
             long decompressStartTime = System.nanoTime();
             byte[] decompressed = this.decompress(out, data.length);
             long decompressEndTime = System.nanoTime();
-            FileOutputStream test = new FileOutputStream("lz4.txt");
+
+            String decompressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-lz4.txt";
+            FileOutputStream test = new FileOutputStream(decompressedFilePath);
             test.write(decompressed);
             test.close();
 

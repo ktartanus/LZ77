@@ -1,6 +1,7 @@
 package compression;
 
 import sun.misc.IOUtils;
+import utils.FileUtils;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,25 +15,30 @@ public class GZIPCompressor implements Compressor {
 
     byte[] buffer = new byte[1024];
 
-    private static final String OUTPUT_FOLDER = "C:\\outputzip";
-
     public CompressionParams compressAndDecompressFile(String inputFilePath) {
         try {
             CompressionParams compressionParams = new CompressionParams();
 
+
+
+
+            String compressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getFileNameFromPath(inputFilePath) + "-gzip.zip";
+
             Path fileLocation = Paths.get(inputFilePath);
             byte[] data = Files.readAllBytes(fileLocation);
             long startCompressionTime = System.nanoTime();
-            byte[] out = compress(inputFilePath, inputFilePath + "ZIP");
+            byte[] out = compress(inputFilePath, compressedFilePath);
             long endCompressionTime = System.nanoTime();
 
             long startDecompressionTime = System.nanoTime();
-            decompress(inputFilePath + "ZIP", "Compressed");
+            File inputFile = new File(inputFilePath);
+            String outputFolder = FileUtils.getFileParentAbsolutePath(compressedFilePath);
+            decompress(compressedFilePath, outputFolder);
             long endDecompressionTime = System.nanoTime();
             File userFile = new File(inputFilePath);
             String filename = userFile.getName();
             compressionParams.setFileName(filename);
-            compressionParams.setCompressionType("gZIP");
+            compressionParams.setCompressionType("GZIP");
             compressionParams.setInitialBytefileSize(data.length);
             compressionParams.setCompressedByteFileSize(out.length);
             compressionParams.setCompressionTimeInMilis((int)(endCompressionTime - startCompressionTime));
@@ -82,28 +88,23 @@ public class GZIPCompressor implements Compressor {
 
         try{
 
-            //create output directory is not exists
-            File folder = new File(OUTPUT_FOLDER);
+            File folder = new File(outputFolder);
             if(!folder.exists()){
                 folder.mkdir();
             }
 
-            //get the zip file content
             ZipInputStream zis =
                     new ZipInputStream(new FileInputStream(zipFile));
-            //get the zipped file list entry
             ZipEntry ze = zis.getNextEntry();
 
             while(ze!=null){
 
-                String fileName = ze.getName();
-                String newFilePath = outputFolder + File.separator + fileName;
+                String fileName = FileUtils.getNameWithoutExtenstion(ze.getName());
+                String newFilePath = outputFolder + File.separator + fileName + "-gzip"+".txt";
                 File newFile = new File(newFilePath);
 
                 System.out.println("file unzip : "+ newFile.getAbsoluteFile());
 
-                //create all non exists folders
-                //else you will hit FileNotFoundException for compressed folder
                 new File(newFile.getParent()).mkdirs();
 
                 FileOutputStream fos = new FileOutputStream(newFile);

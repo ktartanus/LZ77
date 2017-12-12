@@ -1,5 +1,7 @@
 package compression;
 
+import utils.FileUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,16 +24,21 @@ public class DeflateCompressor implements Compressor{
             long startCompressionTime = System.nanoTime();
             byte[] out = this.compress(data);
             long endCompressionTime = System.nanoTime();
+
             File userFile = new File(inputFilePath);
             String filename = userFile.getName();
-            FileOutputStream fos = new FileOutputStream("deflate.def");
+
+            String compressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-deflate.def";
+            FileOutputStream fos = new FileOutputStream(new File(compressedFilePath));
             fos.write(out);
             fos.close();
 
             long decompressStartTime = System.nanoTime();
             byte[] decompressed = this.decompress(out);
             long decompressEndTime = System.nanoTime();
-            FileOutputStream test = new FileOutputStream("deflate.txt");
+
+            String decompressedFilePath = FileUtils.getFileParentAbsolutePath(inputFilePath) + '/' + FileUtils.getNameWithoutExtenstion(filename) + "-deflate.txt";
+            FileOutputStream test = new FileOutputStream(new File(decompressedFilePath));
             test.write(decompressed);
             test.close();
 

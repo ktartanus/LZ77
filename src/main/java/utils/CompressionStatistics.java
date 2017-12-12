@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class CompressionStatistics {
     public static void showCompressionStatistics(List<CompressionParams> compressionParams){
-
-        System.out.format("%22s%22s%22s%22s%22s", "Algorytm", "Czas Kompresji", "Czas Dekompresji", "Rozmiar wejściowy", "Rozmiar po kompresji");
+        System.out.println("Plik : " + compressionParams.get(0).getFileName());
+        System.out.format("%25s%25s%25s%25s%25s", "Algorytm", "Czas Kompresji[ns] ", "Czas Dekompresji[ns] ", "Rozmiar wejściowy[byte] ", "Rozmiar po kompresji[byte] ");
         System.out.println("\n");
         for(CompressionParams singleParam : compressionParams){
             showTableRow(singleParam.getCompressionType(), singleParam.getCompressionTimeInMilis(),singleParam.getDecompressionTimeInMilis(),
