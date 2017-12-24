@@ -83,7 +83,7 @@ public class LZ77Compressor implements Compressor {
                 String compressedString = "~"+matchIndex+"~"+currentMatch.length()+"~"+(char)nextChar;
                 String concat = currentMatch + (char)nextChar;
                 /*
-                 * Zapisz skompresowana trójke jeśli jest krótsza niż dopasowany tekst
+                  * Zapisz skompresowana trójke jeśli jest krótsza niż dopasowany tekst
                  * np. dopasowanie jedynki jest krótsze niż zapisanie w postaci trójki.
                  */
                 if (compressedString.length() <= concat.length()) {
@@ -150,7 +150,7 @@ public class LZ77Compressor implements Compressor {
         streamTokenizer.ordinaryChar((int)'.');
         streamTokenizer.ordinaryChar((int)'-');
         streamTokenizer.ordinaryChar((int)'\n');
-        streamTokenizer.wordChars((int)'\n', (int)'\n');
+//        streamTokenizer.wordChars((int)'\n', (int)'\n');
         streamTokenizer.wordChars((int)' ', (int)'}');
 
         int offset, length;
@@ -162,6 +162,9 @@ public class LZ77Compressor implements Compressor {
                     dictionarySize.append(streamTokenizer.sval);
                     outputFile.print(streamTokenizer.sval);
                     trimDictionarySize();
+                    break;
+                case StreamTokenizer.TT_EOL:
+                    outputFile.print('\n');
                     break;
                 /* jesli tokenem jest liczba to sprawdzamy czy przystąpić do dekompresji */
                 case StreamTokenizer.TT_NUMBER:
