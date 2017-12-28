@@ -1,0 +1,16 @@
+﻿Cel przedmiotu:
+Celem przedmiotu jest zapozanie studentów ze znanymi bezstratnymi oraz stratnymi standardami kompresji danych oraz nowoczesnymi metodami przetwarzania sygnałów multimedialnych, które rokują uzyskanie jeszce lepszych i wydajniejszych algorytmów kompresji sygnałów.
+Treści merytoryczne:
+WYKŁAD:
+Podstawy teoretyczne kompresji danych (KD), efektywność kompresji: współczynnik kompresji. Podstawy teorii sygnałów, klasyfikacja sygnałów, kompresja sygnałów. Elementy teorii informacji, pojęcie informacji, entropia źródła. Klasyfikacja metod KD: redukcja entropii, ograniczanie nadmiarowości (kompresja stratna i bezstratna). Techniki kompresji danych: próbkowanie sygnałów: próbkowanie beznadmiarowe, próbkowanie adaptacyjne, kwantyzacja próbek: kwantyzacja skalarna, kwantyzator optymalny, kwantyzacja wektorowa, algorytm LBG, alokacja bitów, kodowanie predykcyjne (predykcja liniowa), modulacja delta, modulacja różnicowa, modulacja sigma-delta, kodowanie transformacyjne (transformaty: Fouriera (DFT), kosinusowa (DCT), Karhunena-Loeve'go (KLT), transformata składowych głównych - PCA, rozkład na wartości singularne (SVD), transformata falkowa – ciągła (CWT) i dyskretna (DWT), Zastosowania kompresji danych: kompresja sygnałU mowy, kompresja obrazu, kompresja baz danych. Charakterystyka standardów kompresji: kompresja mowy i dźwięku: CD, GSM, MP3 , kompresja obrazów stałych: JPEG, JPEG 2000, kompresja obrazów ruchomych: MPEG1-7.
+PROJEKT:
+Optymalna kwantyzacja skalarna. Predykcja liniowa. Kodowanie transformacyjne: DCT. Kodowanie transformacyjne: DWT. Standardy kompresji: MP3. Standardy kompresji: JPEG. Standardy kompresji: MPEG, Przetwarzanie obrazów na użytek kompresji danych.
+Literatura przedmiotu:
+[1] M. Nelson, "The Data Compression Book", 1991.;
+[2] M. Rabbani, P. W. Jones, "Digital Image Compression Techniques", SPIE Press, 1991.
+[3] K. Sayood, "Introduction to Data Compression", Morgan Kaufmann Publishers, 1996.
+[4] K. Sayood, "Kompresja danych. Wprowadzenie", READ ME, 2002.
+[5] A. Drozdek, "Wprowadzenie do kompresji danych", WNT, 1999.
+[6] M. Domański, "Zaawansowane techniki kompresji obrazów i sekwencji wizyjnych", Wydawnictwo Politechniki Poznańskiej, 2000
+Metody oceny:
+Wymagane zaliczenie kolokwium z wykładu na co najmniej 26 punktów (maksimum 50) i projektu na co najmniej 26 punktów (maksimum 50). Ocena końcowa jest wyliczana na podstawie sumy punktów :3 > 50; 3,5 > 60; 4 > 70 ; 4,5 > 80 ; 5 > 90
